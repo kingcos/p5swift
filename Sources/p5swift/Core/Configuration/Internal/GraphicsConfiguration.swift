@@ -12,6 +12,9 @@ struct GraphicsConfiguration {
   var lastPath: CGPath?
   var curveTightness: Float = 0  
   lazy var ongoingPath = OngoingPath(curveTightness: curveTightness)
+  
+  var textSize: Float?
+  var textFont: String?
 }
 
 struct OngoingPath {

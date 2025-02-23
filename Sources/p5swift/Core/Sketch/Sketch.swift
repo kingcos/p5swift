@@ -164,6 +164,16 @@ open class Sketch: Graphics {
   public func image(_ another: Graphics) {
     graphics.image(another)
   }
+
+  public func text(_ content: String, _ point: Point) {
+    graphics.text(content, point)
+  }
+  public func textSize(_ size: Float) {
+    graphics.textSize(size)
+  }
+  public func textFont(_ font: String) {
+    graphics.textFont(font)
+  }
 }
 
 public extension Sketch {

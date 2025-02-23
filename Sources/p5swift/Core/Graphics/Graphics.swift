@@ -37,6 +37,11 @@ public protocol Graphics {
   func pop()
   
   func image(_ graphics: Graphics)
+    
+    
+  func text(_ content: String, _ point: Point)
+  func textSize(_ size: Float)
+  func textFont(_ font: String)
 }
 
 public extension Graphics {

@@ -33,4 +33,8 @@ enum GraphicsOperations {
   case rotate(Float)
   case push
   case pop
+
+  case text(_ content: String, _ ponit: Point)
+  case textSize(_ size: Float)
+  case textFont(_ font: String)
 }

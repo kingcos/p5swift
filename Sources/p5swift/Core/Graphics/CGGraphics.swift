@@ -129,6 +129,41 @@ class CGGraphics: Graphics, InternalGraphics {
         cgContext.scaleBy(x: CGFloat(point.x), y: CGFloat(point.y))
       case let .rotate(angle):
         cgContext.rotate(by: CGFloat(angle))
+
+      case let .textSize(size):
+        configuration.textSize = size
+      case let .textFont(font):
+        configuration.textFont = font
+      case let .text(content, point):
+        // Create text attributes dictionary
+        var attributes: [NSAttributedString.Key: Any] = [
+          .font: UIFont(
+            name: configuration.textFont ?? "Helvetica",
+            size: CGFloat(configuration.textSize ?? 12)
+          ) ?? UIFont.systemFont(ofSize: 12)
+        ]
+
+        // Special handling when both fill and stroke are present
+        if configuration.fill.alpha > 0 && configuration.stroke.alpha > 0 {
+          attributes[.foregroundColor] = configuration.fill.uiColor
+          attributes[.strokeColor] = configuration.stroke.uiColor
+          // Use negative stroke width to show fill color inside stroke
+          // Reference: https://developer.apple.com/library/archive/qa/qa1531/_index.html
+          attributes[.strokeWidth] = -configuration.strokeWeight
+        } else {
+          // Fill only
+          if configuration.fill.alpha > 0 {
+            attributes[.foregroundColor] = configuration.fill.uiColor
+          }
+          // Stroke only
+          if configuration.stroke.alpha > 0 {
+            attributes[.strokeColor] = configuration.stroke.uiColor
+            attributes[.strokeWidth] = configuration.strokeWeight
+          }
+        }
+              
+        // Draw text
+        content.draw(at: CGPoint(x: CGFloat(point.x), y: CGFloat(point.y)), withAttributes: attributes)
       }
     }
     
@@ -243,5 +278,17 @@ class CGGraphics: Graphics, InternalGraphics {
   
   func rotate(by angle: Float) {
     operations.append(.rotate(angle))
+  }
+
+  func text(_ content: String, _ point: Point) {
+    operations.append(.text(content, point))
+  }
+
+  func textSize(_ size: Float) {
+    operations.append(.textSize(size))
+  }
+
+  func textFont(_ font: String) {
+    operations.append(.textFont(font))
   }
 }

@@ -17,7 +17,7 @@ class CGGraphics: Graphics, InternalGraphics {
     }
   }
   
-  private (set) var frameCount: Int = 1
+  private(set) var frameCount: Int = 1
   
   private var configuration = GraphicsConfiguration()
   
